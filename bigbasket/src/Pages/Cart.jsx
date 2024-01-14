@@ -59,7 +59,7 @@ const Cart = () => {
               </Button>
             </HStack>
             <CartTbale />
-            {/* {cartData.length > 0 ? <CartTotal /> : null} */}
+            {cartData.length > 0 ? <CartTotal /> : null}
           </Box>
         </Box>
       </Box>

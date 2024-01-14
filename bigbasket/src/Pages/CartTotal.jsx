@@ -1,21 +1,29 @@
-import { Box, HStack, Text, Button, Flex } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
+import { Box, HStack, Button, Flex, Text } from "@chakra-ui/react";
 import { RiDeleteBin3Line } from "react-icons/ri";
 import { GiShoppingCart } from "react-icons/gi";
 import { useDispatch } from "react-redux";
 import { resetCart } from "../Redux/CartReducer/action";
-import Footer from "../organisam/Footer";
-import Navbar from "../organisam/Navbar";
+import CheckoutModal from "./CheckoutModal"; // Update this path
 
 const CartTotal = ({ total }) => {
   const dispatch = useDispatch();
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const EmptyBasket = () => {
     dispatch(resetCart());
   };
+
+  const handleCheckout = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
   return (
     <>
-      {/* <Navbar /> */}
       <Box my="3rem">
         <HStack justify={"space-between"} align={"start"}>
           <Flex flexDirection="column">
@@ -24,27 +32,28 @@ const CartTotal = ({ total }) => {
                 leftIcon={<RiDeleteBin3Line fontSize="17px" />}
                 borderRadius="5px"
                 border="1px solid #f89629"
-                bg=" linear-gradient(180deg,#fff 35%,#ebedea 99%)"
+                bg="linear-gradient(180deg,#fff 35%,#ebedea 99%)"
                 color="#58595b"
                 fontSize="12px"
                 fontFamily="Poppins"
                 fontWeight="500"
-                onClick={() => EmptyBasket()}
+                onClick={EmptyBasket}
               >
                 EMPTY BASKET
               </Button>
             </Box>
             <Button
-              leftIcon={<GiShoppingCart fontSize="17px" />}
+              rightIcon={<GiShoppingCart fontSize="17px" />}
               borderRadius="5px"
-              border="1px solid #f89629"
-              bg=" linear-gradient(180deg,#fff 35%,#ebedea 99%)"
+              bg="linear-gradient(180deg,#fee77c 0,#f2ca76 99%)"
               color="#58595b"
-              fontSize="12px"
+              fontSize="16px"
               fontFamily="Poppins"
               fontWeight="500"
+              px="1rem"
+              onClick={handleCheckout}
             >
-              CONTINUE SHIPPING
+              CHECKOUT
             </Button>
           </Flex>
           <Box ml="auto">
@@ -118,7 +127,7 @@ const CartTotal = ({ total }) => {
                     fontWeight="500"
                     color="#58595b"
                   >
-                    RS:{total}
+                    RS: {total}
                   </Text>
                 </Box>
               </Flex>
@@ -127,13 +136,13 @@ const CartTotal = ({ total }) => {
                 <Button
                   rightIcon={<GiShoppingCart fontSize="17px" />}
                   borderRadius="5px"
-                  // border="1px solid #f89629"
                   bg="linear-gradient(180deg,#fee77c 0,#f2ca76 99%)"
                   color="#58595b"
                   fontSize="16px"
                   fontFamily="Poppins"
                   fontWeight="500"
                   px="1rem"
+                  onClick={() => console.log("button clicked")}
                 >
                   CHECKOUT
                 </Button>
@@ -146,13 +155,16 @@ const CartTotal = ({ total }) => {
                 textAlign="center"
                 my="1rem"
               >
-                * To continue shopping click and on the CHECKOUT option
+                * To continue shopping, click on the CHECKOUT option
               </Text>
             </Box>
           </Box>
         </HStack>
       </Box>
-      {/* <Footer /> */}
+
+      {/* Render the modal */}
+      <CheckoutModal isOpen={isModalOpen} onClose={handleCloseModal} />
+      {/* ... rest of your code ... */}
     </>
   );
 };
